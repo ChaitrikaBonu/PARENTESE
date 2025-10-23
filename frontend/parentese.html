@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Baby Cry Detection App</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      overflow: hidden;
+    }
+
+    /* Splash Screen */
+    .splash {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #ffdde1, #ee9ca7, #ffdde1);
+      background-size: 300% 300%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      z-index: 9999;
+      animation: bgMove 6s ease infinite;
+    }
+
+    .splash h1 {
+      font-size: 42px;
+      color: white;
+      text-shadow: 0 0 20px rgba(255, 0, 0, 0.8);
+      animation: glow 2s infinite alternate;
+      margin-bottom: 20px;
+    }
+
+    .splash img {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      box-shadow: 0 0 30px rgba(255, 0, 0, 0.6);
+      animation: zoomIn 2.5s ease forwards, pulse 1.5s infinite;
+    }
+
+    @keyframes bgMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    @keyframes glow {
+      from { text-shadow: 0 0 10px red, 0 0 20px red; }
+      to { text-shadow: 0 0 20px orange, 0 0 40px red; }
+    }
+
+    @keyframes zoomIn {
+      0% { transform: scale(0); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    /* Main App (hidden until splash ends) */
+    .app {
+      display: none;
+      text-align: center;
+      padding: 50px;
+      background: url("d82e0a03-244b-44ea-af8d-18e927ea5c67.png") no-repeat center center/cover;
+      height: 100vh;
+      color: white;
+    }
+
+    .app.active {
+      display: block;
+      animation: fadeIn 2s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Splash Screen -->
+  <div class="splash" id="splashScreen">
+    <h1>Baby Cry App</h1>
+    <img src="c:\Users\rgukt\Documents\baby.jpg" alt="Baby Cry Emoji">
+  </div>
+
+  <!-- Main App -->
+  <div class="app" id="mainApp">
+    <h2>Welcome to Baby Cry Detection App</h2>
+    <p>Detecting your baby’s emotions with ❤️</p>
+  </div>
+
+  <script>
+    // Show app after splash
+    setTimeout(() => {
+      document.getElementById("splashScreen").style.display = "none";
+      document.getElementById("mainApp").classList.add("active");
+    }, 4000); // splash duration
+  </script>
+
+</body>
+</html>

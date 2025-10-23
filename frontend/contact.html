@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us - Cry Detection App</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #ffe1f0, #d3caff);
+      color: #333;
+      overflow-x: hidden;
+    }
+
+    /* === Sidebar === */
+    .sidebar {
+      height: 100%;
+      width: 250px;
+      position: fixed;
+      top: 0;
+      left: -250px;
+      backdrop-filter: blur(15px);
+      background: linear-gradient(180deg, #9b59b6, #8e44ad);
+      color: white;
+      overflow-x: hidden;
+      padding-top: 60px;
+      transition: 0.3s;
+      z-index: 1000;
+    }
+    .sidebar.open {
+      left: 0;
+    }
+    .sidebar a {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 15px 20px;
+      text-decoration: none;
+      color: white;
+      font-size: 18px;
+      transition: 0.3s;
+      border-radius: 8px;
+      margin: 5px;
+    }
+    .sidebar a i {
+      min-width: 25px;
+      text-align: center;
+      font-size: 22px;
+    }
+    .sidebar a:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateX(5px);
+    }
+
+    /* === Hamburger Button === */
+    .menu-btn {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 1100;
+      background: rgba(255,255,255,0.3);
+      backdrop-filter: blur(10px);
+      border: none;
+      border-radius: 8px;
+      padding: 10px 12px;
+      cursor: pointer;
+      font-size: 22px;
+      color: #8e44ad;
+      transition: 0.3s;
+    }
+    .menu-btn:hover {
+      background: rgba(255,255,255,0.6);
+    }
+
+    header {
+      margin-left: 120px;
+      padding: 20px;
+      color: #8e44ad;
+      font-size: 28px;
+      text-align: center;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+    }
+
+    .container {
+      max-width: 600px;
+      position: center;
+      margin: 40px auto;
+      margin-left: 140px;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      animation: fadeIn 1s ease forwards;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    @keyframes fadeIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .contact-info {
+      text-align: center;
+      margin-bottom: 25px;
+      font-size: 18px;
+    }
+    .contact-info span {
+      display: block;
+      margin: 5px 0;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+    label { margin-bottom: 5px; font-weight: bold; }
+    input, textarea {
+      margin-bottom: 15px;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    textarea { resize: vertical; min-height: 100px; }
+
+    .btn {
+      padding: 12px;
+      background: #8e44ad;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: 0.3s;
+    }
+    .btn:hover {
+      background: #732d91;
+    }
+
+    footer {
+      margin-top: 30px;
+      text-align: center;
+      padding: 15px;
+      background: rgba(255,255,255,0.8);
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Hamburger Menu -->
+  <button class="menu-btn" onclick="toggleSidebar()">
+    <i class="fas fa-bars"></i>
+  </button>
+
+  <!-- Sidebar -->
+  <div id="mySidebar" class="sidebar">
+    <span class="closebtn" onclick="closeSidebar()">×</span>
+    <a href="login_page.html">🔐 Login</a>
+    <a href="home.html">🏠 Home</a>
+    <a href="profile_page.html">👤 Profile</a>
+    <a href="settings.html">⚙️ Settings</a>
+    <a href="contact.html">📩 Contact Us</a>
+    <a href="index.html">🚪 Logout</a>
+  </div>
+
+  <header><b></b>📩 Contact Us</b></header>
+
+  <div class="container">
+    <h1>Get in Touch</h1>
+
+    <div class="contact-info">
+      <span>📧 Email: <a href="mailto:chaitrikabonu@gmail.com">chaitrikabonu@gmail.com</a></span>
+      <span>📞 Phone: <a href="tel:+917569006268">+91 7569006268</a></span>
+    </div>
+
+    <form id="contactForm">
+      <label for="name">Name</label>
+      <input type="text" id="name" placeholder="Your Name" required>
+
+      <label for="subject">Subject</label>
+      <input type="text" id="subject" placeholder="Subject" required>
+
+      <label for="message">Message</label>
+      <textarea id="message" placeholder="Your Message" required></textarea>
+
+      <button type="submit" class="btn">Send Message via WhatsApp</button>
+    </form>
+  </div>
+
+  <footer>
+    &copy; 2025 Cry Detection App | All Rights Reserved
+  </footer>
+
+  <script>
+    function toggleSidebar() {
+      document.getElementById("mySidebar").classList.toggle("open");
+    }
+
+    const contactForm = document.getElementById("contactForm");
+    contactForm.addEventListener("submit", function(e){
+      e.preventDefault();
+      const name = document.getElementById("name").value;
+      const subject = document.getElementById("subject").value;
+      const message = document.getElementById("message").value;
+      const phoneNumber = "6301104739";
+      const text = `Name: ${name}\nSubject: ${subject}\nMessage: ${message}`;
+      const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(text)}`;
+      window.open(whatsappURL, "_blank");
+      contactForm.reset();
+    });
+
+    contactForm.addEventListener("submit", async function(e){
+  e.preventDefault();
+  const name = document.getElementById("name").value;
+  const subject = document.getElementById("subject").value;
+  const message = document.getElementById("message").value;
+
+  try {
+    const response = await fetch("http://127.0.0.1:8000/contact", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, subject, message })
+    });
+
+    if (!response.ok) throw new Error("Server error!");
+
+    const data = await response.json();
+    if(data.success){
+      alert("Message sent successfully!");
+      contactForm.reset();
+    } else {
+      alert("Error sending message: " + data.error);
+    }
+  } catch(err) {
+    alert("Could not reach backend: " + err.message);
+  }
+});
+
+  </script>
+
+</body>
+</html>

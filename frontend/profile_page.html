@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile - Cry Detection App</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #f8d9ff, #d3caff, #ffe1f0);
+      background-attachment: fixed;
+      color: #333;
+    }
+
+    /* 🌟 Sliding Sidebar */
+    .sidebar {
+      height: 100%;
+      width: 250px;
+      position: fixed;
+      top: 0;
+      left: -250px;
+      backdrop-filter: blur(12px); 
+      background-color: rgba(0, 0, 0, 0.5);
+      overflow-x: hidden;
+      padding-top: 60px;
+      transition: 0.3s;
+      z-index: 1000;
+      text-align: center;
+    }
+    .sidebar .closebtn {
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      font-size: 30px;
+      cursor: pointer;
+      color: #fff;
+    }
+
+    /* Sidebar user panel */
+    .sidebar .user-panel {
+      margin-bottom: 30px;
+    }
+    .sidebar .user-panel img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 2px solid #fff;
+      object-fit: cover;
+      margin-bottom: 10px;
+    }
+    .sidebar .user-panel .username {
+      color: #fff;
+      font-weight: bold;
+      font-size: 16px;
+    }
+
+    .sidebar a {
+      padding: 12px 20px;
+      text-decoration: none;
+      font-size: 18px;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: 0.3s;
+      border-radius: 6px;
+    }
+    .sidebar a:hover {
+      background-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .openbtn {
+      position: fixed;
+      top: 15px;
+      left: 15px;
+      font-size: 20px;
+      background-color: #9b59b6;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      cursor: pointer;
+      z-index: 1001;
+      border-radius: 8px;
+    }
+    .openbtn:hover {
+      background-color: #7d3c98;
+    }
+
+    .main {
+      transition: margin-left 0.3s;
+      padding: 0;
+    }
+
+    header {
+      background: rgba(155, 89, 182, 0.9);
+      color: white;
+      padding: 15px 20px;
+      text-align: center;
+      border-radius: 0 0 12px 12px;
+    }
+
+    .profile-container {
+      padding: 30px;
+      margin: 40px auto;
+      background: rgba(255,255,255,0.9);
+      border-radius: 16px;
+      max-width: 400px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    .profile-pic {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid #9b59b6;
+      margin-bottom: 20px;
+    }
+    input {
+      display: block;
+      width: 80%;
+      padding: 10px;
+      margin: 10px auto;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    .btn {
+      padding: 10px 20px;
+      background: #9b59b6;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: 0.3s;
+    }
+    .btn:hover {
+      background: #7d3c98;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 🌟 Sidebar -->
+  <div id="mySidebar" class="sidebar">
+    <span class="closebtn" onclick="closeSidebar()">×</span>
+    <div class="user-panel">
+      <img src="default-profile.png" id="sidebarPic" alt="User Pic">
+      <div class="username" id="sidebarName">Your Name</div>
+    </div>
+    <a href="login_page.html">🔐 Login</a>
+    <a href="home.html">🏠 Home</a>
+    <a href="profile_page.html">👤 Profile</a>
+    <a href="settings.html">⚙️ Settings</a>
+    <a href="contact.html">📩 Contact Us</a>
+    <a href="index.html">🚪 Logout</a>
+  </div>
+
+  <!-- Open sidebar button -->
+  <button class="openbtn" onclick="openSidebar()">☰</button>
+
+  <div class="main">
+    <header>
+      <h1>Your Profile</h1>
+    </header>
+
+    <div class="profile-container">
+      <img src="default-profile.png" alt="Profile Picture" class="profile-pic" id="profilePic">
+      <input type="file" id="uploadPic" accept="image/*">
+
+      <input type="text" id="name" placeholder="Your Name">
+      <input type="email" id="email" placeholder="Your Email">
+      <input type="text" id="phone" placeholder="Your Phone">
+
+      <button class="btn" onclick="changeProfilePic()">Upload Picture</button>
+      <button class="btn" onclick="saveProfile()">Save Profile</button>
+    </div>
+  </div>
+
+  <script>
+    function openSidebar() {
+      document.getElementById("mySidebar").style.left = "0";
+      document.querySelector(".main").style.marginLeft = "250px";
+    }
+    function closeSidebar() {
+      document.getElementById("mySidebar").style.left = "-250px";
+      document.querySelector(".main").style.marginLeft = "0";
+    }
+
+    // Load saved profile data
+    window.onload = () => {
+      const savedName = localStorage.getItem("profileName") || "Your Name";
+      const savedEmail = localStorage.getItem("profileEmail");
+      const savedPhone = localStorage.getItem("profilePhone");
+      const savedPic = localStorage.getItem("profilePic") || "default-profile.png";
+
+      document.getElementById("name").value = savedName;
+      if(savedEmail) document.getElementById("email").value = savedEmail;
+      if(savedPhone) document.getElementById("phone").value = savedPhone;
+      document.getElementById("profilePic").src = savedPic;
+
+      // Sidebar user panel
+      document.getElementById("sidebarName").innerText = savedName;
+      document.getElementById("sidebarPic").src = savedPic;
+    };
+
+    function changeProfilePic() {
+      const fileInput = document.getElementById("uploadPic");
+      const profilePic = document.getElementById("profilePic");
+
+      if (fileInput.files && fileInput.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          profilePic.src = e.target.result;
+          localStorage.setItem("profilePic", e.target.result);
+
+          // update sidebar
+          document.getElementById("sidebarPic").src = e.target.result;
+        };
+        reader.readAsDataURL(fileInput.files[0]);
+      }
+    }
+
+    function saveProfile() {
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      const phone = document.getElementById("phone").value;
+
+      localStorage.setItem("profileName", name);
+      localStorage.setItem("profileEmail", email);
+      localStorage.setItem("profilePhone", phone);
+
+      // update sidebar name
+      document.getElementById("sidebarName").innerText = name;
+
+      alert("Profile Saved!");
+    }
+
+    function saveProfile() {
+  const name = document.getElementById("name").value;
+  const email = document.getElementById("email").value;
+  const phone = document.getElementById("phone").value;
+  const profilePic = document.getElementById("profilePic").src; // Base64
+
+  fetch("http://127.0.0.1:8000/profile", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ name, email, phone, profilePic })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if(data.success){
+      alert("Profile saved successfully!");
+      document.getElementById("sidebarName").innerText = name;
+      document.getElementById("sidebarPic").src = profilePic;
+    } else alert("Error saving profile: " + data.error);
+  })
+  .catch(err => alert("Could not reach backend: " + err.message));
+}
+
+  </script>
+</body>
+</html>

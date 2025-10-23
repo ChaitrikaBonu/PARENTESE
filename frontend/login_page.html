@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login Page</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    /* === Background === */
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: 
+        linear-gradient(135deg, rgba(161, 140, 209, 0.6), rgba(251, 194, 235, 0.6)),
+        url("baby-cry.jpg") no-repeat center center fixed;
+      background-size: cover;
+      background-blend-mode: overlay;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    /* === Sidebar Button === */
+    .openbtn {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      font-size: 20px;
+      background: rgba(255,255,255,0.3);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 12px;
+      cursor: pointer;
+      z-index: 1100;
+      backdrop-filter: blur(8px);
+    }
+    .openbtn:hover {
+      background: rgba(255,255,255,0.5);
+    }
+
+    /* === Sidebar (same as home page) === */
+    .sidebar {
+      height: 100%;
+      width: 250px;
+      position: fixed;
+      top: 0;
+      left: -250px;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(15px);
+      overflow-x: hidden;
+      padding-top: 60px;
+      transition: 0.4s;
+      z-index: 1000;
+    }
+    .sidebar.open {
+      left: 0;
+    }
+    .sidebar .closebtn {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-size: 30px;
+      color: white;
+      cursor: pointer;
+    }
+    .sidebar a {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      text-decoration: none;
+      color: #fff;
+      padding: 15px 25px;
+      font-size: 17px;
+      transition: background 0.3s;
+    }
+    .sidebar a i {
+      font-size: 20px;
+      width: 25px;
+      text-align: center;
+    }
+    .sidebar a:hover {
+      background: rgba(255,255,255,0.2);
+      border-radius: 10px;
+    }
+
+    /* === Login Card === */
+    .container {
+      background: rgba(255, 255, 255, 0.85);
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+      width: 340px;
+      text-align: center;
+      backdrop-filter: blur(10px);
+      animation: slideUp 1s ease forwards;
+      opacity: 0;
+      transform: translateY(50px);
+      z-index: 1;
+    }
+    @keyframes slideUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .container h2 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+    .container input {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 15px;
+    }
+    .container button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+    }
+    .login-btn {
+      background: #007bff;
+      color: white;
+    }
+    .login-btn:hover {
+      background: #0056b3;
+    }
+    .google-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: white;
+      color: #444;
+      border: 1px solid #ddd;
+      font-weight: bold;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+    .google-btn img {
+      width: 20px;
+      height: 20px;
+    }
+    .error {
+      color: red;
+      font-size: 14px;
+      margin-top: 5px;
+    }
+    .divider {
+      margin: 15px 0;
+      display: flex;
+      align-items: center;
+    }
+    .divider hr {
+      flex: 1;
+      border: none;
+      border-top: 1px solid #ddd;
+    }
+    .divider span {
+      margin: 0 10px;
+      color: #777;
+      font-size: 14px;
+    }
+    .toggle-link {
+      margin-top: 15px;
+      font-size: 14px;
+    }
+    .toggle-link a {
+      color: #007bff;
+      text-decoration: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .toggle-link a:hover {
+      text-decoration: underline;
+    }
+    .forgot-link {
+      margin-top: 10px;
+      font-size: 13px;
+    }
+    .forgot-link a {
+      color: #007bff;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .forgot-link a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <!-- Sidebar open button -->
+  <button class="openbtn" onclick="openSidebar()">☰</button>
+
+  <!-- Sidebar (same as home) -->
+  <div id="mySidebar" class="sidebar">
+    <span class="closebtn" onclick="closeSidebar()">×</span>
+    <a href="login_page.html">🔐 Login</a>
+    <a href="home.html">🏠 Home</a>
+    <a href="profile_page.html">👤 Profile</a>
+    <a href="settings.html">⚙️ Settings</a>
+    <a href="contact.html">📩 Contact Us</a>
+    <a href="index.html">🚪 Logout</a>
+  </div>
+
+  <!-- Login Card -->
+  <div class="container">
+    <h2>Login</h2>
+    <form id="loginForm">
+      <input type="text" id="username" placeholder="Enter Username" required>
+      <input type="password" id="password" placeholder="Enter Password" required>
+      <button type="submit" class="login-btn">Login</button>
+      <p class="error" id="errorMsg"></p>
+    </form>
+
+    <p class="forgot-link"><a onclick="alert('Password reset link sent!')">Forgot Password?</a></p>
+
+    <div class="divider">
+      <hr><span>OR</span><hr>
+    </div>
+
+    <button class="google-btn" onclick="googleLogin()">
+      <img src="google.png" alt="Google logo">
+      Continue with Google
+    </button>
+
+    <p class="toggle-link">Don’t have an account? <a onclick="alert('Signup form here')">Create New Account</a></p>
+  </div>
+
+  <script>
+    function openSidebar() {
+      document.getElementById("mySidebar").classList.add("open");
+    }
+    function closeSidebar() {
+      document.getElementById("mySidebar").classList.remove("open");
+    }
+
+    const loginForm = document.getElementById("loginForm");
+    const errorMsg = document.getElementById("errorMsg");
+
+    loginForm.addEventListener("submit", function(e) {
+      e.preventDefault();
+      let username = document.getElementById("username").value.trim();
+      let password = document.getElementById("password").value.trim();
+
+      if(username === "admin" && password === "1234") {
+        localStorage.setItem("parentName", username); 
+        alert("Login successful!");
+        window.location.href = "home.html";
+      } else {
+        errorMsg.textContent = "Invalid username or password!";
+      }
+    });
+
+    function googleLogin() {
+      alert("Redirecting to Google Login...");
+      window.location.href = "https://accounts.google.com/signin";
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+numpy>=1.22
+scipy
+librosa>=0.9
+soundfile
+sounddevice
+tensorflow>=2.10
+scikit-learn
+matplotlib
+pandas
+joblib
+tqdm
+fastapi
+uvicorn[standard]

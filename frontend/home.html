@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🏠 Baby Cry Detection App</title>
+<style>
+body { margin:0; font-family:Arial,sans-serif; background:linear-gradient(270deg,#cce7ff,#f5d6eb,#d6ffe0,#fff3c6); background-size:800% 800%; animation:gradientBG 20s ease infinite; color:#333; }
+@keyframes gradientBG {0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
+.sidebar {height:100%;width:250px;position:fixed;top:0;left:-250px;backdrop-filter:blur(12px);background-color:rgba(0,0,0,0.6);padding-top:60px;transition:0.3s;z-index:1000;}
+.sidebar a {padding:15px 25px;text-decoration:none;font-size:18px;color:#fff;display:block;transition:0.3s;}
+.sidebar a:hover {background-color:rgba(255,255,255,0.2);}
+.sidebar .closebtn {position:absolute;top:10px;right:20px;font-size:30px;cursor:pointer;color:white;}
+.openbtn {position:fixed;top:15px;left:15px;font-size:20px;background-color:#007bff;color:white;border:none;padding:10px 15px;cursor:pointer;z-index:1001;border-radius:8px;}
+.openbtn:hover {background-color:pink;}
+.main {transition:margin-left 0.3s;padding:0;}
+header {background:rgba(236,108,168,0.85);color:white;padding:15px 20px;text-align:center;border-radius:0 0 12px 12px;}
+.container {padding:20px;text-align:center;margin-top:40px;}
+.card {background:rgba(255,255,255,0.9);padding:20px;margin:15px auto;border-radius:12px;box-shadow:0 8px 20px rgba(0,0,0,0.3);max-width:500px;}
+.btn {background:#007bff;color:white;border:none;padding:10px 20px;border-radius:8px;cursor:pointer;margin:5px;transition:0.3s;}
+.btn:hover {background:#0056b3;}
+audio {width:100%;margin-top:10px;}
+#predictionResult,#uploadPredictionResult {font-weight:bold;color:#d63384;margin-top:10px;}
+footer {margin-top:30px;text-align:center;padding:15px;background:rgba(255,255,255,0.8);font-size:14px;border-radius:12px 12px 0 0;}
+.search-box {display:flex;justify-content:center;align-items:center;margin:20px auto;max-width:500px;}
+.search-box input {flex:1;padding:10px;border-radius:8px 0 0 8px;border:1px solid #ccc;font-size:16px;}
+.search-box button {padding:10px 15px;border:none;background:#007bff;color:white;border-radius:0 8px 8px 0;cursor:pointer;}
+.mic-btn {margin-left:10px;padding:12px;border:none;border-radius:50%;background:#28a745;color:white;cursor:pointer;font-size:18px;transition:0.3s;}
+.mic-btn.active {background:#dc3545;}
+</style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<div id="mySidebar" class="sidebar">
+  <span class="closebtn" onclick="closeSidebar()">×</span>
+  <a href="login_page.html">🔐 Login</a>
+  <a href="home.html">🏠 Home</a>
+  <a href="profile_page.html">👤 Profile</a>
+  <a href="settings.html">⚙️ Settings</a>
+  <a href="contact.html">📩 Contact Us</a>
+  <a href="index.html">🚪 Logout</a>
+</div>
+
+<button class="openbtn" onclick="openSidebar()">☰</button>
+
+<div class="main">
+<header>
+  <h1>👶 Baby Cry Detection App</h1>
+</header>
+
+<div class="container">
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="Search reports, alerts, settings...">
+    <button onclick="doSearch()">Search</button>
+    <button class="mic-btn" id="micBtn">🎤</button>
+  </div>
+
+  <!-- Live Status -->
+  <div class="card">
+    <h2>📡 Live Detection Status</h2>
+    <p id="liveStatus">Monitoring your baby's sound in real-time...</p>
+  </div>
+
+  <!-- Record Section -->
+  <div class="card">
+    <h2>🎙 Record Baby’s Sound</h2>
+    <button id="startBtn" class="btn">Start Recording</button>
+    <button id="stopBtn" class="btn" disabled>Stop Recording</button>
+    <button id="deleteBtn" class="btn" disabled>Delete</button>
+    <button id="predictRecordBtn" class="btn" disabled>Predict</button>
+    <audio id="audioPlayback" controls></audio>
+    <p id="predictionResult"></p>
+  </div>
+
+  <!-- Upload Section -->
+  <div class="card">
+    <h2>📂 Upload Audio File</h2>
+    <input type="file" id="audioFileInput" accept="audio/*" class="btn">
+    <button id="predictUploadBtn" class="btn" disabled>Predict</button>
+    <audio id="uploadedAudio" controls style="display:none;"></audio>
+    <p id="uploadPredictionResult"></p>
+  </div>
+</div>
+
+<footer>&copy; 2025 Cry Detection App | All Rights Reserved</footer>
+</div>
+
+<script>
+// Sidebar
+function openSidebar(){document.getElementById("mySidebar").style.left="0";document.querySelector(".main").style.marginLeft="250px";}
+function closeSidebar(){document.getElementById("mySidebar").style.left="-250px";document.querySelector(".main").style.marginLeft="0";}
+
+// Search + Voice
+function doSearch(){let q=document.getElementById("searchInput").value;if(q.trim()===""){alert("Please type something.");}else{alert("Searching for: "+q);}}
+const micBtn=document.getElementById("micBtn");const searchInput=document.getElementById("searchInput");
+if('webkitSpeechRecognition'in window){const r=new webkitSpeechRecognition();r.continuous=false;r.lang="en-US";
+r.onstart=()=>micBtn.classList.add("active");r.onend=()=>micBtn.classList.remove("active");
+r.onresult=e=>searchInput.value=e.results[0][0].transcript;micBtn.addEventListener("click",()=>r.start());
+}else{micBtn.disabled=true;micBtn.innerText="🚫";}
+
+// Live simulation
+setInterval(()=>{document.getElementById("liveStatus").innerText=Math.random()<0.1?"🚨 Baby cry detected!":"Monitoring your baby's sound in real-time...";},3000);
+
+// Record Section
+let mediaRecorder,audioChunks=[];
+const startBtn=document.getElementById("startBtn");
+const stopBtn=document.getElementById("stopBtn");
+const deleteBtn=document.getElementById("deleteBtn");
+const predictRecordBtn=document.getElementById("predictRecordBtn");
+const audioPlayback=document.getElementById("audioPlayback");
+const predictionResult=document.getElementById("predictionResult");
+
+startBtn.addEventListener("click",async()=>{
+  const stream=await navigator.mediaDevices.getUserMedia({audio:true});
+  mediaRecorder=new MediaRecorder(stream);
+  mediaRecorder.start();
+  audioChunks=[];
+  mediaRecorder.addEventListener("dataavailable",e=>audioChunks.push(e.data));
+  mediaRecorder.addEventListener("stop",()=>{const audioBlob=new Blob(audioChunks,{type:"audio/wav"});
+    audioPlayback.src=URL.createObjectURL(audioBlob);
+    audioPlayback.blob=audioBlob;
+    deleteBtn.disabled=false;
+    predictRecordBtn.disabled=false;
+    predictionResult.textContent="";
+  });
+  startBtn.disabled=true;stopBtn.disabled=false;
+});
+stopBtn.addEventListener("click",()=>{mediaRecorder.stop();startBtn.disabled=false;stopBtn.disabled=true;});
+deleteBtn.addEventListener("click",()=>{audioPlayback.src="";deleteBtn.disabled=true;predictRecordBtn.disabled=true;predictionResult.textContent="";});
+
+// Upload Section
+const fileInput=document.getElementById("audioFileInput");
+const uploadedAudio=document.getElementById("uploadedAudio");
+const predictUploadBtn=document.getElementById("predictUploadBtn");
+const uploadPredictionResult=document.getElementById("uploadPredictionResult");
+
+fileInput.addEventListener("change",e=>{
+  const file=e.target.files[0];
+  if(file){
+    uploadedAudio.src=URL.createObjectURL(file);
+    uploadedAudio.style.display="block";
+    uploadedAudio.file=file;
+    predictUploadBtn.disabled=false;
+    uploadPredictionResult.textContent="";
+  }
+});
+
+// Send Audio to Backend
+async function sendAudioToBackend(blob){
+  try{
+    const formData=new FormData();
+    formData.append("file",blob,"cry.wav");
+    const res=await fetch("http://127.0.0.1:8000/predict",{method:"POST",body:formData});
+    const data=await res.json();
+    if(!res.ok){throw new Error(data.detail || "Server Error");}
+    return data;
+  }catch(err){
+    return {error: err.message};
+  }
+}
+
+// Predict buttons
+predictRecordBtn.addEventListener("click",async()=>{
+  predictionResult.textContent="🔍 Predicting...";
+  const data=await sendAudioToBackend(audioPlayback.blob);
+  predictionResult.textContent = data.error ? "⚠️ " + data.error : "🍼 Predicted: " + data.top_reason;
+});
+
+predictUploadBtn.addEventListener("click",async()=>{
+  uploadPredictionResult.textContent="🔍 Predicting...";
+  const data=await sendAudioToBackend(uploadedAudio.file);
+  uploadPredictionResult.textContent = data.error ? "⚠️ " + data.error : "🍼 Predicted: " + data.top_reason;
+});
+</script>
+</body>
+</html>

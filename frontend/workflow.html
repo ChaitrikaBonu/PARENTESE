@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Workflow Section</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      background-color: #ffc0cb; /* Soft pink background */
+      overflow: hidden; /* Prevent scrollbars from cloud animation */
+    }
+
+    /* Cloud base */
+    .cloud {
+      position: absolute;
+      background: #fff;
+      border-radius: 50%;
+      opacity: 0.8;
+      animation: floatClouds linear infinite;
+    }
+
+    /* Make each cloud fluffy by adding extra circles */
+    .cloud::before,
+    .cloud::after {
+      content: '';
+      position: absolute;
+      background: #fff;
+      border-radius: 50%;
+    }
+
+    .cloud::before {
+      width: 60%;
+      height: 60%;
+      top: -20%;
+      left: 60%;
+    }
+
+    .cloud::after {
+      width: 70%;
+      height: 70%;
+      top: -10%;
+      left: -40%;
+    }
+
+    /* Floating animation */
+    @keyframes floatClouds {
+      0% { transform: translateX(-250px); }
+      100% { transform: translateX(120vw); }
+    }
+
+    /* Workflow Section */
+    .workflow {
+      text-align: center;
+      padding: 60px 20px;
+      position: relative;
+      z-index: 1; /* keep steps above clouds */
+    }
+
+    .workflow h2 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+      color: #3c2a4d;
+    }
+
+    .workflow p {
+      font-size: 1rem;
+      margin-bottom: 40px;
+      color: #5a4b69;
+    }
+
+    .workflow-steps {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 30px;
+      flex-wrap: wrap;
+    }
+
+    .step {
+      background: #fff;
+      padding: 20px;
+      width: 220px;
+      border-radius: 20px;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .step:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    }
+
+    .step-icon {
+      font-size: 40px;
+      margin-bottom: 15px;
+    }
+
+    .step h3 {
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+      color: #3c2a4d;
+    }
+
+    .step p {
+      font-size: 0.9rem;
+      color: #5a4b69;
+    }
+
+    .arrow {
+      font-size: 30px;
+      color: #3c2a4d;
+    }
+
+    @media (max-width: 768px) {
+      .workflow-steps {
+        flex-direction: column;
+      }
+      .arrow {
+        transform: rotate(90deg);
+      }
+    }
+  </style>
+</head>
+<body>
+
+   <!-- Clouds -->
+	<div class="cloud" style="width: 120px; height: 70px; top: 100px; left: -200px; animation-duration: 20s;"></div>
+	<div class="cloud" style="width: 150px; height: 90px; top: 200px; left: -300px; animation-duration: 25s;"></div>
+	<div class="cloud" style="width: 200px; height: 110px; top: 350px; left: -400px; animation-duration: 30s;"></div>
+	<div class="cloud" style="width: 100px; height: 60px; top: 50px; left: -150px; animation-duration: 18s;"></div>
+
+  <!-- Workflow -->
+  <section class="workflow">
+    <h2>How It Works</h2>
+    <p>Understand your baby’s needs in 3 simple steps</p>
+
+    <div class="workflow-steps">
+      <div class="step">
+        <div class="step-icon">🎤</div>
+        <h3>Listening</h3>
+        <p>App listens to your baby’s cry in real-time.</p>
+      </div>
+
+      <div class="arrow">➡️</div>
+
+      <div class="step">
+        <div class="step-icon">🤖</div>
+        <h3>AI Analysis</h3>
+        <p>AI detects the type of cry and possible reason.</p>
+      </div>
+
+      <div class="arrow">➡️</div>
+
+      <div class="step">
+        <div class="step-icon">🔔</div>
+        <h3>Smart Alerts</h3>
+        <p>Parents receive instant notifications with suggestions.</p>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>
+
